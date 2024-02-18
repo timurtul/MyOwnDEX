@@ -2,6 +2,8 @@
 
 import "./QitePool.sol";
 
+pragma solidity ^0.8.20;
+
 contract QiteSwap {
     
     address[] public allPairs;
@@ -12,7 +14,9 @@ contract QiteSwap {
         require(token1 != token2, "Identical address is not allowed");
         require(address(getPair[token1][token2]) == address(0), "Pair already exist");
 
-        QitePool qitePool = new QitePool();
+        string memory liquitiyTokenName = string(abi.encodePacked("Liquidity-",token1Name, "-", token2Name));
+
+        QitePool qitePool = new QitePool(token1, token2);
         getPair[token1][token2] = qitePool;
         getPair[token2][token1] = qitePool;
         allPairs.push(address(qitePool));
@@ -29,7 +33,5 @@ contract QiteSwap {
       function getPairs() external view returns(address[] memory){
         return allPairs;
     }
-
-
 
 }
